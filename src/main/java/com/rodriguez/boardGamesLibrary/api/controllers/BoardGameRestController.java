@@ -11,7 +11,7 @@ import java.util.List;
 
 @CrossOrigin(origins={""}) //Cross-Origin Resource Sharing
 @RestController
-@RequestMapping(path = "/api/library/boardgames")
+@RequestMapping(path = "/boardgames")
 public class BoardGameRestController {
 
     @Autowired

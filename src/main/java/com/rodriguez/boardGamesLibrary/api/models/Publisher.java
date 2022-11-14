@@ -26,7 +26,7 @@ public class Publisher implements Serializable {
     private String web;
 
     @JsonIgnoreProperties({"designers", "publishers", "artists", "images"})
-    @ManyToMany(mappedBy = "publishers")
+    @ManyToMany(mappedBy = "publishers", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<BoardGame> games;
 
     public Publisher() {
@@ -65,12 +65,14 @@ public class Publisher implements Serializable {
         this.web = web;
     }
 
+
     public Set<BoardGame> getGames() {
         return games;
     }
 
     public void setGames(Set<BoardGame> games) {
-        this.games = games;
+        this.games.addAll(games);
+        games.forEach(c->c.getPublishers().add(this));
     }
 
     @Override

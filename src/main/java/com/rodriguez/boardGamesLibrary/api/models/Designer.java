@@ -25,7 +25,7 @@ public class Designer implements Serializable {
     private String country;
 
     @JsonIgnoreProperties({"designers", "publishers", "artists", "images"})
-    @ManyToMany(mappedBy = "designers")
+    @ManyToMany(mappedBy = "designers", cascade = {CascadeType.PERSIST})
     private Set<BoardGame> games;
 
     public Designer() {
@@ -69,7 +69,8 @@ public class Designer implements Serializable {
     }
 
     public void setGames(Set<BoardGame> games) {
-        this.games = games;
+        this.games.addAll(games);
+        games.forEach(c->c.getDesigners().add(this));
     }
 
     @Override

@@ -31,6 +31,10 @@ public class PublisherService {
 
     @Transactional
     public void deleteById(Long id){
+        Publisher publisher = this.byId(id);
+        if(publisher != null){
+            publisher.getGames().forEach(c->c.getPublishers().remove(publisher));
+        }
         publisherRepository.deleteById(id);
     }
 }

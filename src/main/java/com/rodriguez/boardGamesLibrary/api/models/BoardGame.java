@@ -139,7 +139,7 @@ public class BoardGame implements Serializable {
     }
 
     public void setPublishers(Set<Publisher> publishers) {
-        this.publishers = publishers;
+        this.publishers.addAll(publishers);
     }
 
     public Set<Designer> getDesigners() {
@@ -147,7 +147,7 @@ public class BoardGame implements Serializable {
     }
 
     public void setDesigners(Set<Designer> designers) {
-        this.designers = designers;
+        this.designers.addAll(designers);
     }
 
     public Set<Artist> getArtists() {

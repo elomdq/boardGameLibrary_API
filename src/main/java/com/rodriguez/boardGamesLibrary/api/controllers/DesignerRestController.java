@@ -13,9 +13,10 @@ import java.util.List;
 public class DesignerRestController {
 
     @Autowired
-    DesignerService designerService;
+    private DesignerService designerService;
 
     @GetMapping("/list")
+    @ResponseStatus(HttpStatus.OK)
     public List<Designer> findAll(){
         return designerService.findAll();
     }

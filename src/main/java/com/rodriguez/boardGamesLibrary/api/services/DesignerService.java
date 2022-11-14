@@ -12,7 +12,7 @@ import java.util.List;
 public class DesignerService {
 
     @Autowired
-    DesignerRepository designerRepository;
+    private DesignerRepository designerRepository;
 
     @Transactional(readOnly = true)
     public List<Designer> findAll(){

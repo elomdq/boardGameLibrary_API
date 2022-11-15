@@ -1,2 +1,2 @@
 # boardGameLibrary_API
-API Rest created with jax-rs, just for practice.
+API Rest created with Spring, just for practice.

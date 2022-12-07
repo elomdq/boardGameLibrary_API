@@ -1,6 +1,6 @@
 package com.rodriguez.boardGamesLibrary.api.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -10,6 +10,9 @@ import java.util.Set;
 
 @Entity
 @Table(name = "boardgames")
+/*@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")*/
 public class BoardGame implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -29,7 +32,9 @@ public class BoardGame implements Serializable {
     private String bgg;
 
     @OneToMany(mappedBy = "game", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
-    @JsonIgnoreProperties({"game"})
+    //@JsonIgnoreProperties({"game"})
+    //@JsonManagedReference
+    @JsonIgnore
     private Set<Image> images;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST,CascadeType.MERGE})
@@ -102,11 +107,11 @@ public class BoardGame implements Serializable {
         this.minAge = minAge;
     }
 
-    public int getYear() {
+    public int getBgYear() {
         return bgYear;
     }
 
-    public void setYear(int bgYear) {
+    public void setBgYear(int bgYear) {
         this.bgYear = bgYear;
     }
 
@@ -155,7 +160,7 @@ public class BoardGame implements Serializable {
     }
 
     public void setArtists(Set<Artist> artists) {
-        this.artists = artists;
+        this.artists.addAll(artists);
     }
 
     @Override
@@ -169,7 +174,7 @@ public class BoardGame implements Serializable {
                 maxPlayers==boardGame.getMaxPlayers() &&
                 minPlayers==boardGame.getMinPlayers() &&
                 minAge==boardGame.getMinAge() &&
-                bgYear==boardGame.getYear() &&
+                bgYear==boardGame.getBgYear() &&
                 bgg.equals(boardGame.getBgg()) &&
                 designers.equals(boardGame.getDesigners()) &&
                 publishers.equals(boardGame.getPublishers()) &&

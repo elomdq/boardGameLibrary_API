@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.swing.text.Position;
 import java.util.List;
 
-@CrossOrigin(origins={""}) //Cross-Origin Resource Sharing
+//@CrossOrigin(origins={""}) //Cross-Origin Resource Sharing
 @RestController
 @RequestMapping(path = "/boardgames")
 public class BoardGameRestController {
@@ -49,7 +49,7 @@ public class BoardGameRestController {
 
     private void crossData(BoardGame currentGame, BoardGame newGame){
         currentGame.setName(newGame.getName());
-        currentGame.setYear(newGame.getYear());
+        currentGame.setBgYear(newGame.getBgYear());
         currentGame.setMinPlayers(newGame.getMinPlayers());
         currentGame.setMaxPlayers(newGame.getMaxPlayers());
         currentGame.setMaxPlayers(newGame.getMaxPlayers());

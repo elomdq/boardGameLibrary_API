@@ -21,6 +21,12 @@ public class ImageRestController {
         return imageService.findAll();
     }
 
+    @GetMapping("/list/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Image> findAllByGameId(@PathVariable(name = "id") Long gameId){
+        return imageService.byGameId(gameId);
+    }
+
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Image byId(@PathVariable Long id){

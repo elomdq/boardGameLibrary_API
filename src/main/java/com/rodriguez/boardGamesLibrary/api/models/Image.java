@@ -1,6 +1,6 @@
 package com.rodriguez.boardGamesLibrary.api.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -8,6 +8,9 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "images")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Image implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -18,12 +21,16 @@ public class Image implements Serializable {
     private Long id;
     private String url;
 
+    @Column(name = "img_base64")
+    private String img;
 
+    @Column(unique = true)
     private String name;
 
     @ManyToOne()
-    @JoinColumn(name = "id")
-    @JsonIgnoreProperties({"publishers", "designers", "artists", "images"})
+    @JoinColumn(name = "id_game")
+    //@JsonIgnoreProperties({"publishers", "designers", "artists", "images"})
+    //@JsonBackReference
     private BoardGame game;
 
     public Image() {
@@ -59,6 +66,17 @@ public class Image implements Serializable {
 
     public void setGame(BoardGame game) {
         this.game = game;
+        if(!game.getImages().contains(this)){
+            game.getImages().add(this);
+        }
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 
     @Override
@@ -66,11 +84,11 @@ public class Image implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Image image = (Image) o;
-        return Objects.equals(id, image.id) && Objects.equals(url, image.url) && Objects.equals(name, image.name) && Objects.equals(game, image.game);
+        return Objects.equals(id, image.id) && Objects.equals(url, image.url) && Objects.equals(name, image.name) && Objects.equals(game, image.game) && Objects.equals(img,image.img);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, url, name, game);
+        return Objects.hash(id, url, name, game, img);
     }
 }

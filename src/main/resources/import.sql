@@ -5,8 +5,8 @@ insert into boardgames(name, min_players, max_players, min_age, bg_year, likes, 
 insert into designers(name, last_name, country) values('Klaus-Jürgen','Wrede','Germany');
 insert into designers(name, last_name, country) values('Richard','Garfield','USA');
 
-insert into publishers(name, web, country) values('Hans im Glück','http://www.hans-im-glueck.de/','Germany');
-insert into publishers(name, web, country) values('IELLO','https://linktr.ee/IELLO','France');
+insert into publishers(name, web, country) values('Hans im Glück','www.hans-im-glueck.de','Germany');
+insert into publishers(name, web, country) values('IELLO','www.iello.fr','France');
 
 insert into boardgames_designers(games_id, designers_id) values(1,2);
 insert into boardgames_designers(games_id, designers_id) values(2,1);

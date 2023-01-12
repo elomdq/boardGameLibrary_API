@@ -27,13 +27,13 @@ public class DesignerRestController {
         return designerService.byId(id);
     }
 
-    @PostMapping
+    @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public Designer create(@RequestBody Designer designer){
         return designerService.save(designer);
     }
 
-    @PutMapping(path ="/{id}")
+    @PutMapping(path ="/{id}", consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public Designer update(@PathVariable Long id, @RequestBody Designer designer){
         Designer currentDesigner = findById(id);
@@ -54,6 +54,6 @@ public class DesignerRestController {
     @DeleteMapping(path="/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteById(@PathVariable Long id){
-        designerService.delete(id);
+        designerService.deleteById(id);
     }
 }

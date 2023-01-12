@@ -184,20 +184,6 @@ public class BoardGame implements Serializable {
 
     @Override
     public int hashCode() {
-        /*int prime = 31;
-        int result = 1;
-
-        result = prime * result + ((id==null)?0:Long.hashCode(id));
-        result = prime * result + ((name==null)?0:name.hashCode());
-        result = prime * result + ((bgYear==0)?0:Integer.hashCode(bgYear));
-        result = prime * result + ((maxPlayers==0)?0:Integer.hashCode(maxPlayers));
-        result = prime * result + ((minPlayers==0)?0:Integer.hashCode(minPlayers));
-        result = prime * result + ((minAge==0)?0:Integer.hashCode(minAge));
-        result = prime * result + ((designers==null)?0:designers.hashCode());
-        result = prime * result + ((artists==null)?0:artists.hashCode());
-        result = prime * result + ((publishers==null)?0:publishers.hashCode());
-        result = prime * result + ((images==null)?0:images.hashCode())*/;
-
-        return Objects.hash(id,name,bgYear,maxPlayers,minPlayers,minAge,bgg,designers,artists,publishers,images);
+        return Objects.hash(id,name,bgYear,maxPlayers,minPlayers,minAge,bgg);
     }
 }

@@ -28,13 +28,13 @@ public class PublisherRestController {
         return publisherService.byId(id);
     }
 
-    @PostMapping
+    @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public Publisher create(@RequestBody Publisher publisher){
         return publisherService.save(publisher);
     }
 
-    @PutMapping(path="/{id}")
+    @PutMapping(path="/{id}", consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public Publisher update(@PathVariable Long id, @RequestBody Publisher publisher){
         Publisher currentPublisher = publisherService.byId(id);

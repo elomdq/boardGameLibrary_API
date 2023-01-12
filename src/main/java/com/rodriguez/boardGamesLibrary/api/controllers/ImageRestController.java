@@ -1,6 +1,7 @@
 package com.rodriguez.boardGamesLibrary.api.controllers;
 
 import com.rodriguez.boardGamesLibrary.api.models.Image;
+import com.rodriguez.boardGamesLibrary.api.services.BoardGameService;
 import com.rodriguez.boardGamesLibrary.api.services.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,9 @@ public class ImageRestController {
 
     @Autowired
     private ImageService imageService;
+
+    @Autowired
+    private BoardGameService bgService;
 
     @GetMapping("/list")
     @ResponseStatus(HttpStatus.OK)
@@ -33,13 +37,13 @@ public class ImageRestController {
         return imageService.byId(id);
     }
 
-    @PostMapping
+    @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public Image create(@RequestBody Image image){
         return imageService.save(image);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(path= "/{id}", consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public Image update(@PathVariable Long id, @RequestBody Image image){
         Image currentImage = imageService.byId(id);

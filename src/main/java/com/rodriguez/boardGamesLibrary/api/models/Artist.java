@@ -1,6 +1,7 @@
 package com.rodriguez.boardGamesLibrary.api.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -22,7 +23,8 @@ public class Artist implements Serializable {
     private String lastName;
     private String country;
 
-    @JsonIgnoreProperties({"designers", "publishers", "artists", "images"})
+    //@JsonIgnoreProperties({"designers", "publishers", "artists", "images"})
+    @JsonIncludeProperties({"name", "id"})
     @ManyToMany(mappedBy = "artists")
     private Set<BoardGame> games;
 

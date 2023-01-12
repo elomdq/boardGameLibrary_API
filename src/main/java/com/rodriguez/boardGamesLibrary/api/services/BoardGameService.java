@@ -20,6 +20,16 @@ public class BoardGameService {
     }
 
     @Transactional(readOnly = true)
+    public List<BoardGame> findByDesignerId(Long id){
+        return (List<BoardGame>) boardGameRepository.findByDesignerId(id);
+    }
+
+    @Transactional(readOnly = true)
+    public List<BoardGame> findByPublisherId(Long id){
+        return (List<BoardGame>) boardGameRepository.findByPublisherId(id);
+    }
+
+    @Transactional(readOnly = true)
     public BoardGame byId(Long id){
         return boardGameRepository.findById(id).orElse(null);
     }

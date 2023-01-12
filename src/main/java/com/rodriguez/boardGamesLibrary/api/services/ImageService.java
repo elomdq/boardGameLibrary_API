@@ -2,7 +2,6 @@ package com.rodriguez.boardGamesLibrary.api.services;
 
 import com.rodriguez.boardGamesLibrary.api.models.Image;
 import com.rodriguez.boardGamesLibrary.api.repositories.ImageRepository;
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,5 +38,6 @@ public class ImageService {
     public void delete(Long id){
         imageRepository.deleteById(id);
     }
+
 
 }

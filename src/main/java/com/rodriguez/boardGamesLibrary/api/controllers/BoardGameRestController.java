@@ -1,6 +1,7 @@
 package com.rodriguez.boardGamesLibrary.api.controllers;
 
 import com.rodriguez.boardGamesLibrary.api.models.BoardGame;
+import com.rodriguez.boardGamesLibrary.api.models.Publisher;
 import com.rodriguez.boardGamesLibrary.api.services.BoardGameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,19 +23,31 @@ public class BoardGameRestController {
         return boardGameService.findAll();
     }
 
+    @GetMapping("/list/by-designer/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<BoardGame> findByDesignerId(@PathVariable Long id){
+        return boardGameService.findByDesignerId(id);
+    }
+
+    @GetMapping("/list/by-publisher/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<BoardGame> findByPublisherId(@PathVariable Long id){
+        return boardGameService.findByPublisherId(id);
+    }
+
     @GetMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK) //por default
     public BoardGame byId(@PathVariable Long id){
         return boardGameService.byId(id);
     }
 
-    @PostMapping
+    @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public BoardGame save(@RequestBody BoardGame game){
         return boardGameService.save(game);
     }
 
-    @PutMapping(path="/{id}")
+    @PutMapping(path="/{id}",consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public BoardGame update(@PathVariable Long id, @RequestBody BoardGame game){
         BoardGame currentGame = boardGameService.byId(id);

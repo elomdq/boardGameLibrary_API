@@ -27,13 +27,13 @@ public class ArtistRestController {
         return artistService.byId(id);
     }
 
-    @PostMapping
+    @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public Artist create(@RequestBody Artist artist){
         return artistService.save(artist);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(path= "/{id}", consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public Artist update(@PathVariable Long id, @RequestBody Artist artist){
         Artist currentArtist = artistService.byId(id);

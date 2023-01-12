@@ -1,6 +1,7 @@
 package com.rodriguez.boardGamesLibrary.api.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -24,8 +25,9 @@ public class Designer implements Serializable {
     private String lastName;
     private String country;
 
-    @JsonIgnoreProperties({"designers", "publishers", "artists", "images"})
-    @ManyToMany(mappedBy = "designers", cascade = {CascadeType.PERSIST})
+    //@JsonIgnoreProperties({"designers", "publishers", "artists", "images"})
+    @JsonIncludeProperties({"name", "id"})
+    @ManyToMany(mappedBy = "designers", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.})
     private Set<BoardGame> games;
 
     public Designer() {

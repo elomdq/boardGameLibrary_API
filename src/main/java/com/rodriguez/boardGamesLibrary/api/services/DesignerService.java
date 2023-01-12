@@ -30,7 +30,11 @@ public class DesignerService {
     }
 
     @Transactional
-    public void delete(Long id){
+    public void deleteById(Long id){
+        Designer designer = this.byId(id);
+        if(designer != null){
+            designer.getGames().forEach(c->c.getDesigners().remove(designer));
+        }
         designerRepository.deleteById(id);
     }
 }

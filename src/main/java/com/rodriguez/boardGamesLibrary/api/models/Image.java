@@ -29,7 +29,7 @@ public class Image implements Serializable {
 
     @ManyToOne()
     @JoinColumn(name = "id_game")
-    //@JsonIgnoreProperties({"publishers", "designers", "artists", "images"})
+    @JsonIgnoreProperties({"publishers", "designers", "artists", "images"})
     //@JsonBackReference
     private BoardGame game;
 
@@ -89,6 +89,6 @@ public class Image implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, url, name, game, img);
+        return Objects.hash(id, url, name, img);
     }
 }

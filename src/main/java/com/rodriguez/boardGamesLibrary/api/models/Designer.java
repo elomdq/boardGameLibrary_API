@@ -27,7 +27,7 @@ public class Designer implements Serializable {
 
     //@JsonIgnoreProperties({"designers", "publishers", "artists", "images"})
     @JsonIncludeProperties({"name", "id"})
-    @ManyToMany(mappedBy = "designers", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.})
+    @ManyToMany(mappedBy = "designers", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<BoardGame> games;
 
     public Designer() {

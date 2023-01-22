@@ -29,7 +29,8 @@ public class Image implements Serializable {
 
     @ManyToOne()
     @JoinColumn(name = "id_game")
-    @JsonIgnoreProperties({"publishers", "designers", "artists", "images"})
+    @JsonIncludeProperties({"name", "id"})
+    //@JsonIgnoreProperties({"publishers", "designers", "artists", "images"})
     //@JsonBackReference
     private BoardGame game;
 

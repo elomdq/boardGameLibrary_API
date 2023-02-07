@@ -1,16 +1,15 @@
 package com.rodriguez.boardGamesLibrary.api.controllers;
 
 import com.rodriguez.boardGamesLibrary.api.models.BoardGame;
-import com.rodriguez.boardGamesLibrary.api.models.Publisher;
 import com.rodriguez.boardGamesLibrary.api.services.BoardGameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.Position;
 import java.util.List;
+//Cross-Origin Resource Sharing
 
-//@CrossOrigin(origins={""}) //Cross-Origin Resource Sharing
+@CrossOrigin
 @RestController
 @RequestMapping(path = "/boardgames")
 public class BoardGameRestController {

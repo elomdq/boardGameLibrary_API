@@ -1,65 +1,37 @@
-package com.rodriguez.boardGamesLibrary.api.models;
+package com.rodriguez.boardGamesLibrary.api.dto;
+import com.rodriguez.boardGamesLibrary.api.models.*;
 
-import com.fasterxml.jackson.annotation.*;
-
-import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
-@Entity
-@Table(name = "boardgames")
-/*@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")*/
-public class BoardGame implements Serializable {
+public class BoardGameDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
     private String name;
 
     private int minPlayers;
     private int maxPlayers;
     private int minAge;
     private int bgYear;
-
-    @Transient
     private int likes;
-
     private String bgg;
 
-    @OneToMany(mappedBy = "game", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
-    //@JsonIgnoreProperties({"game"})
-    //@JsonManagedReference
-    @JsonIgnore
-    private Set<Image> images;
+    private List<Image> images;
+    private List<Publisher> publishers;
+    private List<Designer> designers;
+    private List<Artist> artists;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST,CascadeType.MERGE})
-    @JsonIgnoreProperties({"games"})
-    private Set<Publisher> publishers;
-
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST,CascadeType.MERGE})
-    @JsonIgnoreProperties({"games"})
-    private Set<Designer> designers;
-
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST,CascadeType.MERGE})
-    @JsonIgnoreProperties({"games"})
-    private Set<Artist> artists;
-
-    public BoardGame() {
-        this.publishers = new HashSet<>();
-        this.designers = new HashSet<>();
-        this.artists = new HashSet<>();
-        this.images = new HashSet<>();
+    public BoardGameDTO() {
+        this.publishers = new ArrayList<>();
+        this.designers = new ArrayList<>();
+        this.artists = new ArrayList<>();
+        this.images = new ArrayList<>();
     }
 
-    public BoardGame(String name, int minPlayers, int maxPlayers, int minAge, int bgYear, String bgg) {
+    public BoardGameDTO(String name, int minPlayers, int maxPlayers, int minAge, int bgYear, String bgg) {
         this();
         this.name = name;
         this.minPlayers = minPlayers;
@@ -134,44 +106,44 @@ public class BoardGame implements Serializable {
         this.bgg = bgg;
     }
 
-    public Set<Image> getImages() {
+    public List<Image> getImages() {
         return images;
     }
 
-    public void setImages(Set<Image> images) {
-        this.images.addAll(images);
+    public void setImages(List<Image> images) {
+        this.images = images;
     }
 
-    public Set<Publisher> getPublishers() {
+    public List<Publisher> getPublishers() {
         return publishers;
     }
 
-    public void setPublishers(Set<Publisher> publishers) {
-        this.publishers.addAll(publishers);
+    public void setPublishers(List<Publisher> publishers) {
+        this.publishers = publishers;
     }
 
-    public Set<Designer> getDesigners() {
+    public List<Designer> getDesigners() {
         return designers;
     }
 
-    public void setDesigners(Set<Designer> designers) {
-        this.designers.addAll(designers);
+    public void setDesigners(List<Designer> designers) {
+        this.designers = designers;
     }
 
-    public Set<Artist> getArtists() {
+    public List<Artist> getArtists() {
         return artists;
     }
 
-    public void setArtists(Set<Artist> artists) {
-        this.artists.addAll(artists);
+    public void setArtists(List<Artist> artists) {
+        this.artists = artists;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         //if (o == null || getClass() != o.getClass()) return false;
-        if (!(o instanceof BoardGame)) return false;
-        BoardGame boardGame = (BoardGame) o;
+        if (!(o instanceof com.rodriguez.boardGamesLibrary.api.models.BoardGame)) return false;
+        com.rodriguez.boardGamesLibrary.api.models.BoardGame boardGame = (com.rodriguez.boardGamesLibrary.api.models.BoardGame) o;
         return id== boardGame.getId() &&
                 name.equals(boardGame.getName()) &&
                 maxPlayers==boardGame.getMaxPlayers() &&

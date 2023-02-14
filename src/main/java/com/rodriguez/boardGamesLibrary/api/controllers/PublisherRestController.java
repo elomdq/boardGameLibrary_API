@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.nio.file.Path;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping(path="/publishers")
 public class PublisherRestController {

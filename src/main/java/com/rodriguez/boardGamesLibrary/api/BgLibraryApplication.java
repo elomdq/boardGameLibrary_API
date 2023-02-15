@@ -12,16 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 public class BgLibraryApplication {
 
 	public static void main(String[] args) {
-
 		SpringApplication.run(BgLibraryApplication.class, args);
-
-		//Solo probando las interfases de Spring Security
-//		SecurityContext context = SecurityContextHolder.createEmptyContext();
-//		Authentication authentication = new TestingAuthenticationToken("user","password","ROLE_USER");
-//		context.setAuthentication(authentication);
-//		SecurityContextHolder.setContext(context);
-
-
 	}
 
 }

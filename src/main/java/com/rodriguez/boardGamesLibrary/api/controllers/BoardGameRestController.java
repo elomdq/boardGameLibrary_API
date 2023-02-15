@@ -15,7 +15,7 @@ public class BoardGameRestController {
 
     @Autowired
     private BoardGameService boardGameService;
-
+    
     @GetMapping("/list")
     public List<BoardGame> list(){
         return boardGameService.findAll();

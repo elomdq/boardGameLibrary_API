@@ -1,6 +1,6 @@
-insert into boardgames(name, min_players, max_players, min_age, bg_year, likes, bgg) values('King of Tokyo',2,6,8,2011,2,'https://boardgamegeek.com/boardgame/70323/king-tokyo');
-insert into boardgames(name, min_players, max_players, min_age, bg_year, likes, bgg) values('Carcassonne',2,5,7,2000,10,'https://boardgamegeek.com/boardgame/822/carcassonne');
-insert into boardgames(name, min_players, max_players, min_age, bg_year, likes, bgg) values('Bunny Kingdom',2,4,12,2017,9,'https://boardgamegeek.com/boardgame/822/carcassonne');
+insert into boardgames(name, min_players, max_players, min_age, bg_year, bgg) values('King of Tokyo',2,6,8,2011,'https://boardgamegeek.com/boardgame/70323/king-tokyo');
+insert into boardgames(name, min_players, max_players, min_age, bg_year, bgg) values('Carcassonne',2,5,7,2000,'https://boardgamegeek.com/boardgame/822/carcassonne');
+insert into boardgames(name, min_players, max_players, min_age, bg_year, bgg) values('Bunny Kingdom',2,4,12,2017,'https://boardgamegeek.com/boardgame/822/carcassonne');
 
 insert into designers(name, last_name, country) values('Klaus-Jürgen','Wrede','Germany');
 insert into designers(name, last_name, country) values('Richard','Garfield','USA');

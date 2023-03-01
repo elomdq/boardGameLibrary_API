@@ -1,9 +1,11 @@
 HELP.md
+
+### MVN ###
 target/
-!.mvn/wrapper/maven-wrapper.jar
-!.mvn/timing.properties
-!**/src/main/**/target/
-!**/src/test/**/target/
+.mvn/wrapper/maven-wrapper.jar
+.mvn/timing.properties
+**/src/main/**/target/
+**/src/test/**/target/
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
@@ -11,7 +13,9 @@ pom.xml.next
 release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
-
+src/main/resources/application-dev.properties
+application-dev.properties
+application-production.properties
 
 ### STS ###
 .apt_generated
@@ -27,16 +31,3 @@ buildNumber.properties
 *.iws
 *.iml
 *.ipr
-
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
-
-### VS Code ###
-.vscode/

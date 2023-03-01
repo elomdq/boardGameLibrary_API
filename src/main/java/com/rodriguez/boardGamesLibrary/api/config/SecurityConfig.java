@@ -17,6 +17,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig{
 
+
     @Autowired
     private AppBasicAuthenticationEntryPoint authEntryPoint;
 
@@ -41,18 +42,20 @@ public class SecurityConfig{
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http
             .authorizeHttpRequests()
+                .antMatchers( "/api/library/h2-console/**").permitAll()
                 .antMatchers(HttpMethod.POST,"/api/library/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET,"/api/library/**").hasAnyRole("USER", "ADMIN")
                 .antMatchers(HttpMethod.PUT,"/api/library/**/{param}").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/api/library/**/{param}").hasRole("ADMIN")
-//                .antMatchers( "/api/library/error").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic()
                 .authenticationEntryPoint(authEntryPoint);
 
-        http.csrf().disable();
+        http.csrf().disable(); //no es necesario en esta api
         http.cors();
+
+        http.headers().frameOptions().disable(); //para habilitar el uso de la consola de hs en frame
 
         return http.build();
     }

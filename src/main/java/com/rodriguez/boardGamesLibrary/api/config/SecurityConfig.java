@@ -24,14 +24,14 @@ public class SecurityConfig{
     @Bean
     public InMemoryUserDetailsManager users() {
         UserDetails admin = User
-                .withUsername("admin")
-                .password(passwordEncoder().encode("password2"))
+                .withUsername("")
+                .password(passwordEncoder().encode(""))
                 .roles("ADMIN")
                 .build();
 
         UserDetails user = User
-                .withUsername("user")
-                .password(passwordEncoder().encode("password"))
+                .withUsername("")
+                .password(passwordEncoder().encode(""))
                 .roles("USER")
                 .build();
 

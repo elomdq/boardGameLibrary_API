@@ -4,6 +4,7 @@ import com.rodriguez.boardGamesLibrary.api.models.Image;
 import com.rodriguez.boardGamesLibrary.api.services.BoardGameService;
 import com.rodriguez.boardGamesLibrary.api.services.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,7 +42,7 @@ public class ImageRestController {
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public Image create(@RequestBody Image image){
-        return imageService.save(image);
+            return imageService.save(image);
     }
 
     @PutMapping(path= "/{id}", consumes = "application/json", produces = "application/json")

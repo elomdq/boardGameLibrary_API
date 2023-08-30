@@ -24,12 +24,12 @@ public class DesignerService {
         return designerRepository.findById(id).orElse(null);
     }
 
-    @Transactional
+    @Transactional(readOnly = false)
     public Designer save(Designer designer){
         return designerRepository.save(designer);
     }
 
-    @Transactional
+    @Transactional(readOnly = false)
     public void deleteById(Long id){
         Designer designer = this.byId(id);
         if(designer != null){

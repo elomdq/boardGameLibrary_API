@@ -3,71 +3,37 @@ package com.rodriguez.boardGamesLibrary.api.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+import lombok.*;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+@ToString
 @Entity
 @Table(name = "designers",
        uniqueConstraints = {@UniqueConstraint(columnNames = {"name", "lastname"})}
 )
 public class Designer implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Getter @Setter
     private Long id;
 
-    private String name;
-    private String lastName;
-    private String country;
+    @Getter @Setter private String name;
+    @Getter @Setter private String lastName;
+    @Getter @Setter private String country;
 
-    //@JsonIgnoreProperties({"designers", "publishers", "artists", "images"})
     @JsonIncludeProperties({"name", "id"})
     @ManyToMany(mappedBy = "designers", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private Set<BoardGame> games;
+    @Getter private Set<BoardGame> games;
 
     public Designer() {
         this.games = new HashSet<>();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public Set<BoardGame> getGames() {
-        return games;
     }
 
     public void setGames(Set<BoardGame> games) {
@@ -76,25 +42,23 @@ public class Designer implements Serializable {
     }
 
     @Override
-    public String toString() {
-        return  "Name: " + name +
-                "LastName: " + lastName +
-                "Country: " + country;
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Designer)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Designer designer = (Designer) o;
-        return Objects.equals(id, designer.id) &&
-                Objects.equals(name, designer.name) &&
-                Objects.equals(lastName, designer.lastName) &&
-                Objects.equals(country, designer.country);
+        return /*Objects.equals(id, designer.id)
+                && */Objects.equals(name, designer.name)
+                && Objects.equals(lastName, designer.lastName)
+                && Objects.equals(country, designer.country);
     }
+
+    /*@Override
+    public int hashCode() {
+        return Objects.hash(*//*id,*//* name, lastName, country);
+    }*/
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, lastName, country);
+        return Objects.hash(name, lastName, country, games);
     }
 }

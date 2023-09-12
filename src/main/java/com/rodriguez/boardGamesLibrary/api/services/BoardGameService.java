@@ -8,7 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class BoardGameService {
@@ -20,35 +24,40 @@ public class BoardGameService {
     BoardGameMapper bgMapper;
 
     @Transactional(readOnly = true)
-    public List<BoardGame> findAll(){
-        List<BoardGame> boardGames = (List<BoardGame>)boardGameRepository.findAll();
-/*
-        System.out.println("DISEÑADORES");
+    public Set<BoardGameDto> findAll(){
+        Set<BoardGameDto> boardGamesDto = bgMapper.toDtos(Set.copyOf(
+                StreamSupport
+                        .stream(boardGameRepository.findAll().spliterator(),false)
+                        .collect(Collectors.toList())
+                )
+        );
+        return boardGamesDto;
+    }
 
-        boardGames.forEach(boardGame -> {
-            System.out.println(boardGame.getDesigners());
-        });
-
-        System.out.println(boardGames);*/
+    @Transactional(readOnly = true)
+    public Set<BoardGameDto> findAllByDesignerId(Long id){
+        Set<BoardGameDto> boardGames = bgMapper.toDtos(Set.copyOf(
+                StreamSupport
+                        .stream(boardGameRepository.findByDesignerId(id).spliterator(), false)
+                        .collect(Collectors.toList())
+        ));
         return boardGames;
     }
 
     @Transactional(readOnly = true)
-    public List<BoardGame> findByDesignerId(Long id){
-        return (List<BoardGame>) boardGameRepository.findByDesignerId(id);
+    public Set<BoardGameDto> findAllByPublisherId(Long id){
+        Set<BoardGameDto> boardGames = bgMapper.toDtos(Set.copyOf(
+                StreamSupport
+                        .stream(boardGameRepository.findByPublisherId(id).spliterator(),false)
+                        .collect(Collectors.toList())
+        ));
+        return boardGames;
     }
 
     @Transactional(readOnly = true)
-    public List<BoardGame> findByPublisherId(Long id){
-        return (List<BoardGame>) boardGameRepository.findByPublisherId(id);
-    }
-
-    @Transactional(readOnly = true)
-    public BoardGame findById(Long id){
+    public BoardGameDto findById(Long id){
         BoardGame bg = boardGameRepository.findById(id).orElse(null);
-        //System.out.println(bg);
-
-        return bg;
+        return bgMapper.toDto(bg);
     }
 
     /*@Transactional(readOnly = true)
@@ -61,8 +70,9 @@ public class BoardGameService {
     }*/
 
     @Transactional(readOnly = false)
-    public BoardGame save(BoardGame game){
-        return boardGameRepository.save(game);
+    public BoardGameDto save(BoardGameDto game){
+        BoardGame bg = boardGameRepository.save(bgMapper.toEntity(game));
+        return bgMapper.toDto(bg);
     }
 
     @Transactional(readOnly = false)

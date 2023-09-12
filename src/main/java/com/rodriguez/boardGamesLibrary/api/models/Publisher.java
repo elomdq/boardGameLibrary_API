@@ -42,14 +42,14 @@ public class Publisher implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Publisher publisher = (Publisher) o;
-        return /*Objects.equals(id, publisher.id)
-                && */Objects.equals(name, publisher.name)
+        return Objects.equals(id, publisher.id)
+                && Objects.equals(name, publisher.name)
                 && Objects.equals(country, publisher.country)
                 && Objects.equals(web, publisher.web);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(/*id,*/ name, country, web);
+        return Objects.hash(id, name, country, web);
     }
 }

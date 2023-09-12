@@ -84,22 +84,13 @@ public class BoardGame implements Serializable {
                 && maxPlayers == boardGame.maxPlayers
                 && minAge == boardGame.minAge
                 && bgYear == boardGame.bgYear
-                /*&& Objects.equals(id, boardGame.id)*/
+                && Objects.equals(id, boardGame.id)
                 && Objects.equals(name, boardGame.name)
-                && Objects.equals(bgg, boardGame.bgg)
-                && Objects.equals(images, boardGame.images)
-                && Objects.equals(publishers, boardGame.publishers)
-                && Objects.equals(designers, boardGame.designers)
-                && Objects.equals(artists, boardGame.artists);
+                && Objects.equals(bgg, boardGame.bgg);
     }
-
-    /*@Override
-    public int hashCode() {
-        return Objects.hash(*//*id,*//* name, minPlayers, maxPlayers, minAge, bgYear, bgg);
-    }*/
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, minPlayers, maxPlayers, minAge, bgYear, bgg, likes, images, publishers, designers, artists);
+        return Objects.hash(id, name, minPlayers, maxPlayers, minAge, bgYear, bgg, likes);
     }
 }

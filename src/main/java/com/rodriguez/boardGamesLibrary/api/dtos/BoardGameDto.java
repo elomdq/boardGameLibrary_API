@@ -15,9 +15,8 @@ import java.util.List;
 import java.util.Set;
 
 
-//@AllArgsConstructor
-@EqualsAndHashCode
-//@ToString(exclude = {"likes", "id", "publishers.games", "designers.games", "artists.games", "images"})
+@AllArgsConstructor
+@ToString(exclude = {"likes", "id", "publishers.games", "designers.games", "artists.games", "images"})
 public class BoardGameDto implements Serializable {
     private static final long serialVersionUID = 1L;
 

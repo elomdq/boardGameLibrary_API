@@ -50,14 +50,14 @@ public class Image implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Image image = (Image) o;
-        return /*Objects.equals(id, image.id)
-                &&*/ Objects.equals(url, image.url)
+        return Objects.equals(id, image.id)
+                && Objects.equals(url, image.url)
                 && Objects.equals(name, image.name)
                 && Objects.equals(game, image.game);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(/*id,*/ url, name);
+        return Objects.hash(id, url, name);
     }
 }

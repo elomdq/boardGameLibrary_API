@@ -41,11 +41,11 @@ public class Artist implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Artist artist = (Artist) o;
-        return /*Objects.equals(id, artist.id) &&*/ Objects.equals(name, artist.name) && Objects.equals(lastName, artist.lastName) && Objects.equals(country, artist.country);
+        return Objects.equals(id, artist.id) && Objects.equals(name, artist.name) && Objects.equals(lastName, artist.lastName) && Objects.equals(country, artist.country);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, lastName, country);
+        return Objects.hash(id, name, lastName, country);
     }
 }

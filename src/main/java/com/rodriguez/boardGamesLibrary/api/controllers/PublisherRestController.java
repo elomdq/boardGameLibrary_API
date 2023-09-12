@@ -1,10 +1,13 @@
 package com.rodriguez.boardGamesLibrary.api.controllers;
 
+import com.rodriguez.boardGamesLibrary.api.dtos.PublisherDto;
 import com.rodriguez.boardGamesLibrary.api.models.Publisher;
 import com.rodriguez.boardGamesLibrary.api.services.PublisherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -17,10 +20,19 @@ public class PublisherRestController {
     @Autowired
     private PublisherService publisherService;
 
-    @GetMapping("/list")
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Publisher> findAll(){
-        return publisherService.findAll();
+    public ResponseEntity<List<PublisherDto>> findAll(){
+        List<PublisherDto> publisherDtos = null;
+        try{
+             publisherDtos = List.copyOf(publisherService.findAll());
+        }
+        catch(Exception ex){
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), ex);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(publisherDtos);
     }
 
     @GetMapping(path="/{id}")

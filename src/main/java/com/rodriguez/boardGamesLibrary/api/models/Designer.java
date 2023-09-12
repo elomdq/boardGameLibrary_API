@@ -46,19 +46,14 @@ public class Designer implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Designer designer = (Designer) o;
-        return /*Objects.equals(id, designer.id)
-                && */Objects.equals(name, designer.name)
+        return Objects.equals(id, designer.id)
+                && Objects.equals(name, designer.name)
                 && Objects.equals(lastName, designer.lastName)
                 && Objects.equals(country, designer.country);
     }
 
-    /*@Override
-    public int hashCode() {
-        return Objects.hash(*//*id,*//* name, lastName, country);
-    }*/
-
     @Override
     public int hashCode() {
-        return Objects.hash(name, lastName, country, games);
+        return Objects.hash(id, name, lastName, country);
     }
 }

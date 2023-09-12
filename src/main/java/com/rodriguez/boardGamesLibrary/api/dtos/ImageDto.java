@@ -7,8 +7,8 @@ import lombok.*;
 import java.io.Serializable;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @ToString
-@EqualsAndHashCode
 public class ImageDto implements Serializable {
     private static final long serialVersionUID = 1L;
 

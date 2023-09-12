@@ -1,14 +1,6 @@
 package com.rodriguez.boardGamesLibrary.api.controllers;
 
-import com.rodriguez.boardGamesLibrary.api.dtos.ArtistDto;
 import com.rodriguez.boardGamesLibrary.api.dtos.BoardGameDto;
-import com.rodriguez.boardGamesLibrary.api.dtos.ImageDto;
-import com.rodriguez.boardGamesLibrary.api.dtos.PublisherDto;
-import com.rodriguez.boardGamesLibrary.api.mappers.BoardGameMapper;
-import com.rodriguez.boardGamesLibrary.api.models.Artist;
-import com.rodriguez.boardGamesLibrary.api.models.BoardGame;
-import com.rodriguez.boardGamesLibrary.api.models.Image;
-import com.rodriguez.boardGamesLibrary.api.models.Publisher;
 import com.rodriguez.boardGamesLibrary.api.services.BoardGameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Set;
 
 @CrossOrigin
 @RestController
@@ -28,65 +19,88 @@ public class BoardGameRestController {
     private BoardGameService boardGameService;
 
     @GetMapping
-    public ResponseEntity<List<BoardGame>> list(){
-        List<BoardGame> boardGames;
+    public ResponseEntity<List<BoardGameDto>> findAll(){
+        List<BoardGameDto> boardGames;
         try{
-            boardGames = boardGameService.findAll();
+            boardGames = List.copyOf(boardGameService.findAll());
         } catch (Exception ex){
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), ex);
         }
         return ResponseEntity.status(HttpStatus.OK).body(boardGames);
     }
 
     @GetMapping("/by-designer/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public List<BoardGame> findByDesignerId(@PathVariable Long id){
-        return boardGameService.findByDesignerId(id);
+    public ResponseEntity<List<BoardGameDto>> findByDesignerId(@PathVariable Long id){
+        List<BoardGameDto> boardGames;
+        try{
+            boardGames = List.copyOf(boardGameService.findAllByDesignerId(id));
+        } catch (Exception ex){
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), ex);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(boardGames);
     }
 
     @GetMapping("/by-publisher/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public List<BoardGame> findByPublisherId(@PathVariable Long id){
-        return boardGameService.findByPublisherId(id);
-    }
-
-    @GetMapping(path = "/{id}")
-    @ResponseStatus(HttpStatus.OK) //por default
-    public BoardGame byId(@PathVariable Long id){
-        return boardGameService.findById(id);
-    }
-
-    /*
-    @GetMapping(path = "/{id}")
-    @ResponseStatus(HttpStatus.OK) //por default
-    public ResponseEntity<BoardGame> byId(@PathVariable Long id){
-        try {
-            return new ResponseEntity<BoardGame>(boardGameService.byId(id), HttpStatus.OK);
-        }catch (BoardGameNotFoundException e){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No se encontro el juego");
+    public ResponseEntity<List<BoardGameDto>> findByPublisherId(@PathVariable Long id){
+        List<BoardGameDto> boardGames;
+        try{
+            boardGames = List.copyOf(boardGameService.findAllByPublisherId(id));
+        } catch (Exception ex){
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), ex);
         }
-    }*/
+        return ResponseEntity.status(HttpStatus.OK).body(boardGames);
+    }
+
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<BoardGameDto> findById(@PathVariable Long id){
+        BoardGameDto boardGame;
+        try{
+            boardGame = boardGameService.findById(id);
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(boardGame);
+    }
 
     @PostMapping(consumes = "application/json", produces = "application/json")
-    @ResponseStatus(HttpStatus.CREATED)
-    public BoardGame save(@RequestBody BoardGame game){
-        return boardGameService.save(game);
+    public ResponseEntity<BoardGameDto> save(@RequestBody BoardGameDto game){
+        BoardGameDto boardGameDto;
+        try{
+            boardGameDto = boardGameService.save(game);
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(boardGameDto);
     }
 
     @PutMapping(path="/{id}",consumes = "application/json", produces = "application/json")
-    @ResponseStatus(HttpStatus.CREATED)
-    public BoardGame update(@PathVariable Long id, @RequestBody BoardGame game){
-        BoardGame currentGame = boardGameService.findById(id);
-
-        if(currentGame!=null){
-            crossData(currentGame,game);
-            return boardGameService.save(currentGame);
+    public ResponseEntity<BoardGameDto> update(@PathVariable Long id, @RequestBody BoardGameDto game){
+        BoardGameDto currentGame;
+        try{
+            currentGame = boardGameService.findById(id);
+            if(currentGame!=null){
+                crossData(currentGame,game);
+                currentGame = boardGameService.save(currentGame);
+            }
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
         }
-
-        return null;
+        return ResponseEntity.status(HttpStatus.CREATED).body(currentGame);
     }
 
-    private void crossData(BoardGame currentGame, BoardGame newGame){
+    private void crossData(BoardGameDto currentGame, BoardGameDto newGame){
         currentGame.setName(newGame.getName().toLowerCase());
         currentGame.setBgYear(newGame.getBgYear());
         currentGame.setMinPlayers(newGame.getMinPlayers());
@@ -95,15 +109,21 @@ public class BoardGameRestController {
         currentGame.setMinAge(newGame.getMinAge());
         currentGame.setBgg(newGame.getBgg().toLowerCase());
         currentGame.setLikes(newGame.getLikes());
-        currentGame.setImages((Set<Image>) newGame.getImages());
-        currentGame.setArtists((Set<Artist>) newGame.getArtists());
+        currentGame.setImages(newGame.getImages());
+        currentGame.setArtists(newGame.getArtists());
         currentGame.setDesigners(newGame.getDesigners());
-        currentGame.setPublishers((Set<Publisher>) newGame.getPublishers());
+        currentGame.setPublishers(newGame.getPublishers());
     }
 
     @DeleteMapping(path = "/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id){
-        boardGameService.delete(id);
+    public ResponseEntity delete(@PathVariable Long id){
+        try{
+            boardGameService.delete(id);
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+        }
     }
 }

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 @ToString
-@EqualsAndHashCode
+@AllArgsConstructor
 public class DesignerDto implements Serializable {
     private static final long serialVersionUID = 1L;
 

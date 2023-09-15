@@ -1,82 +1,44 @@
 package com.rodriguez.boardGamesLibrary.api.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+import lombok.*;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+@ToString
 @Entity
 @Table(name = "artists")
 public class Artist implements Serializable {
-
     private static final long serialVersionUID = 1L;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Getter @Setter
     private Long id;
+    @Getter @Setter private String name;
+    @Getter @Setter private String lastName;
+    @Getter @Setter private String country;
 
-    private String name;
-    private String lastName;
-    private String country;
-
-    //@JsonIgnoreProperties({"designers", "publishers", "artists", "images"})
     @JsonIncludeProperties({"name", "id"})
     @ManyToMany(mappedBy = "artists")
-    private Set<BoardGame> games;
+    @Getter @Setter private Set<BoardGame> games;
 
     public Artist() {
         this.games = new HashSet<>();
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public Set<BoardGame> getGames() {
-        return games;
-    }
-
     public void setGames(Set<BoardGame> games) {
-        this.games = games;
+        this.games.addAll(games);
+        games.forEach(c->c.getArtists().add(this));
     }
 
-    @Override
-    public String toString() {
-        return  "Name: " + name +
-                "LastName: " + lastName +
-                "Country: " + country;
+    public void clearBoardGames(){
+        //al ser no-owner de la relacion ManyToMany no serviria solo con limpiar
+        games.forEach(c->c.getArtists().remove(this));
     }
 
     @Override

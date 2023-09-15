@@ -3,6 +3,7 @@ package com.rodriguez.boardGamesLibrary.api.services;
 import com.rodriguez.boardGamesLibrary.api.models.Image;
 import com.rodriguez.boardGamesLibrary.api.repositories.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +32,13 @@ public class ImageService {
 
     @Transactional
     public Image save(Image image){
-        return imageRepository.save(image);
+        //try{
+            return imageRepository.save(image);
+        //}
+        /*catch(DataIntegrityViolationException exp){
+
+            return null;
+        }*/
     }
 
     @Transactional

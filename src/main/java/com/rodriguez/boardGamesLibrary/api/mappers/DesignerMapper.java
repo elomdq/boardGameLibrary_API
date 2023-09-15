@@ -14,13 +14,8 @@ import java.util.Set;
 public interface DesignerMapper {
 
 
-    /*Mapper para evitar la recursividad de las listas de diseñadores de los juegos, este es el metodo por default para mappear Designer*/
-    //@Mapping(target= "games", qualifiedByName = "toDtosIgnoreChildLists")
     public DesignerDto toDto(Designer designer);
-
-    //@Mapping(target= "games", qualifiedByName = "toEntitiesIgnoreChildLists")
     public Designer toEntity(DesignerDto designerDto);
-
     public Set<Designer> toEntities (Set<DesignerDto> designerDtos);
     public Set<DesignerDto> toDtos(Set<Designer> designers);
 

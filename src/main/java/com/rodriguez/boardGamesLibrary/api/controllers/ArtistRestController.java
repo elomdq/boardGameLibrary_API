@@ -1,10 +1,12 @@
 package com.rodriguez.boardGamesLibrary.api.controllers;
 
-import com.rodriguez.boardGamesLibrary.api.models.Artist;
+import com.rodriguez.boardGamesLibrary.api.dtos.ArtistDto;
 import com.rodriguez.boardGamesLibrary.api.services.ArtistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -12,42 +14,65 @@ import java.util.List;
 @RestController
 @RequestMapping("/artist")
 public class ArtistRestController {
-
     @Autowired
     private ArtistService artistService;
 
-    @GetMapping("/list")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Artist> findAll(){
-        return artistService.findAll();
+    @GetMapping
+    public ResponseEntity<List<ArtistDto>> findAll(){
+
+        List<ArtistDto> artistDtos;
+        try{
+            artistDtos = List.copyOf(artistService.findAll());
+        }catch(Exception ex){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), ex);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(artistDtos);
     }
 
     @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public Artist byId(@PathVariable Long id){
-        return artistService.byId(id);
+    public ResponseEntity<ArtistDto> findById(@PathVariable Long id){
+        ArtistDto artistDto;
+        try{
+            artistDto = artistService.findById(id);
+            if(artistDto==null){
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+            }
+        }catch(Exception ex){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), ex);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(artistDto);
     }
 
     @PostMapping(consumes = "application/json", produces = "application/json")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Artist create(@RequestBody Artist artist){
-        return artistService.save(artist);
+    public ResponseEntity<ArtistDto> create(@RequestBody ArtistDto artist){
+        ArtistDto artistDto;
+        try {
+            artistDto = artistService.save(artist);
+        }catch(Exception ex){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), ex);
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(artistDto);
     }
 
     @PutMapping(path= "/{id}", consumes = "application/json", produces = "application/json")
-    @ResponseStatus(HttpStatus.OK)
-    public Artist update(@PathVariable Long id, @RequestBody Artist artist){
-        Artist currentArtist = artistService.byId(id);
+    public ResponseEntity<ArtistDto> update(@PathVariable Long id, @RequestBody ArtistDto artist){
+        ArtistDto currentArtist;
+        try {
+            currentArtist = artistService.findById(id);
 
-        if(currentArtist!=null){
-            crossData(currentArtist,artist);
-            return artistService.save(currentArtist);
+            if(currentArtist!=null){
+                crossData(currentArtist,artist);
+                currentArtist = artistService.save(currentArtist);
+            }
+        }catch (Exception ex){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), ex);
         }
 
-        return null;
+        return ResponseEntity.status(HttpStatus.OK).body(currentArtist);
     }
 
-    private void crossData(Artist currentArtist, Artist newArtist){
+    private void crossData(ArtistDto currentArtist, ArtistDto newArtist){
         currentArtist.setName(newArtist.getName());
         currentArtist.setLastName(newArtist.getLastName());
         currentArtist.setCountry(newArtist.getCountry());
@@ -55,8 +80,12 @@ public class ArtistRestController {
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id){
-        artistService.delete(id);
+    public ResponseEntity delete(@PathVariable Long id){
+        try{
+            artistService.deleteById(id);
+        }catch(Exception e){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+        }
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }

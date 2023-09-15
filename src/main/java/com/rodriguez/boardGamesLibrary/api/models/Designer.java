@@ -1,6 +1,5 @@
 package com.rodriguez.boardGamesLibrary.api.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 
 import jakarta.persistence.*;
@@ -29,7 +28,7 @@ public class Designer implements Serializable {
     @Getter @Setter private String country;
 
     @JsonIncludeProperties({"name", "id"})
-    @ManyToMany(mappedBy = "designers", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(mappedBy = "designers"/*, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}*/)
     @Getter private Set<BoardGame> games;
 
     public Designer() {
@@ -39,6 +38,11 @@ public class Designer implements Serializable {
     public void setGames(Set<BoardGame> games) {
         this.games.addAll(games);
         games.forEach(c->c.getDesigners().add(this));
+    }
+
+    public void clearBoardGames(){
+        //al ser no-owner de la relacion ManyToMany no serviria solo con limpiar
+        games.forEach(c->c.getDesigners().remove(this));
     }
 
     @Override

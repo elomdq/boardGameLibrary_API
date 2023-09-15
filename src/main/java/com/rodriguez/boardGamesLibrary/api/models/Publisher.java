@@ -37,6 +37,11 @@ public class Publisher implements Serializable {
         games.forEach(c->c.getPublishers().add(this));
     }
 
+    public void clearBoardGames(){
+        //al ser no-owner de la relacion ManyToMany no serviria solo con limpiar
+        games.forEach(c->c.getPublishers().remove(this));
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

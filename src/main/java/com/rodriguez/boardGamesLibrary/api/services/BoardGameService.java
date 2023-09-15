@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -60,15 +58,6 @@ public class BoardGameService {
         return bgMapper.toDto(bg);
     }
 
-    /*@Transactional(readOnly = true)
-    public BoardGame byId(Long id){
-        Optional<BoardGame> opBoardGame = boardGameRepository.findById(id);
-        if(opBoardGame.isPresent())
-            return opBoardGame.get();
-        else
-            throw new BoardGameNotFoundException("No se encontro el juego");
-    }*/
-
     @Transactional(readOnly = false)
     public BoardGameDto save(BoardGameDto game){
         BoardGame bg = boardGameRepository.save(bgMapper.toEntity(game));
@@ -77,6 +66,14 @@ public class BoardGameService {
 
     @Transactional(readOnly = false)
     public void delete(Long id){
+        BoardGame boardGame = boardGameRepository.findById(id).get();
+
+        if(boardGame != null){
+            boardGame.clearDesigners();
+            boardGame.clearPublishers();
+            boardGame.clearArtists();
+        }
+
         boardGameRepository.deleteById(id);
     }
 }

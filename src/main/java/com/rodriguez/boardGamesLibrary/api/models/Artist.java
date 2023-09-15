@@ -36,6 +36,11 @@ public class Artist implements Serializable {
         games.forEach(c->c.getArtists().add(this));
     }
 
+    public void clearBoardGames(){
+        //al ser no-owner de la relacion ManyToMany no serviria solo con limpiar
+        games.forEach(c->c.getArtists().remove(this));
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

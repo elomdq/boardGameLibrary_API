@@ -9,12 +9,9 @@ import org.springframework.context.annotation.Lazy;
 import java.util.List;
 import java.util.Set;
 
-@Mapper(uses = BoardGameSlimMapper.class/*, injectionStrategy = InjectionStrategy.FIELD*/)
+@Mapper(uses = BoardGameSlimMapper.class)
 public interface ArtistMapper {
-    //@Mapping(target= "games", qualifiedByName = "toDtosIgnoreChildLists")
     public ArtistDto toDto(Artist artist);
-
-   // @Mapping(target= "games", qualifiedByName = "toEntitiesIgnoreChildLists")
     public Artist toEntity(ArtistDto artistDto);
 
     public Set<Artist> toEntities (Set<ArtistDto> artistDtos);

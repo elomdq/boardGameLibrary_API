@@ -23,6 +23,7 @@ public class BoardGameRestController {
         List<BoardGameDto> boardGames;
         try{
             boardGames = List.copyOf(boardGameService.findAll());
+            //boardGames.sort((a,b)->a.getId().compareTo(b.getId()));
         } catch (Exception ex){
             System.out.println(ex.getMessage());
             ex.printStackTrace();
@@ -62,6 +63,9 @@ public class BoardGameRestController {
         BoardGameDto boardGame;
         try{
             boardGame = boardGameService.findById(id);
+            if(boardGame==null){
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+            }
         }catch(Exception e){
             System.out.println(e.getMessage());
             e.printStackTrace();
@@ -97,7 +101,7 @@ public class BoardGameRestController {
             e.printStackTrace();
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(currentGame);
+        return ResponseEntity.status(HttpStatus.OK).body(currentGame);
     }
 
     private void crossData(BoardGameDto currentGame, BoardGameDto newGame){
@@ -119,11 +123,11 @@ public class BoardGameRestController {
     public ResponseEntity delete(@PathVariable Long id){
         try{
             boardGameService.delete(id);
-            return new ResponseEntity(HttpStatus.NO_CONTENT);
         }catch(Exception e){
             System.out.println(e.getMessage());
             e.printStackTrace();
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
         }
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }

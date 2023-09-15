@@ -1,8 +1,6 @@
 package com.rodriguez.boardGamesLibrary.api.controllers;
 
-import com.rodriguez.boardGamesLibrary.api.dtos.BoardGameDto;
 import com.rodriguez.boardGamesLibrary.api.dtos.DesignerDto;
-import com.rodriguez.boardGamesLibrary.api.models.Designer;
 import com.rodriguez.boardGamesLibrary.api.services.DesignerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,38 +32,67 @@ public class DesignerRestController {
     }
 
     @GetMapping(path = "/{id}")
-    @ResponseStatus(HttpStatus.OK) //por default
-    public Designer findById(@PathVariable Long id){
-        return designerService.byId(id);
+    public ResponseEntity<DesignerDto> findById(@PathVariable Long id){
+        DesignerDto designerDto;
+        try{
+            designerDto = designerService.findById(id);
+            if(designerDto==null){
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+            }
+        }catch(Exception ex){
+            /*System.out.println(ex.getMessage());
+            ex.printStackTrace();*/
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), ex);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(designerDto);
     }
 
     @PostMapping(consumes = "application/json", produces = "application/json")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Designer create(@RequestBody Designer designer){
-        return designerService.save(designer);
+    public ResponseEntity<DesignerDto> create(@RequestBody DesignerDto designer){
+        DesignerDto designerDto;
+        try{
+            designerDto =designerService.save(designer);
+        }catch(Exception ex){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), ex);
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(designerDto);
     }
 
     @PutMapping(path ="/{id}", consumes = "application/json", produces = "application/json")
-    @ResponseStatus(HttpStatus.OK)
-    public Designer update(@PathVariable Long id, @RequestBody Designer designer){
-        Designer currentDesigner = findById(id);
+    public ResponseEntity<DesignerDto> update(@PathVariable Long id, @RequestBody DesignerDto designer){
+        DesignerDto currentDesigner;
 
-        if(currentDesigner!=null){
-            crossData(currentDesigner,designer);
-            return designerService.save(currentDesigner);
+        try{
+            currentDesigner  = designerService.findById(id);
+
+            if(currentDesigner!=null){
+                crossData(currentDesigner,designer);
+                currentDesigner = designerService.save(currentDesigner);
+            }
+        }catch(Exception ex){
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), ex);
         }
-        return null;
+
+        return ResponseEntity.status(HttpStatus.OK).body(currentDesigner);
     }
 
-    private void crossData(Designer currentDesigner, Designer newDesigner){
+    private void crossData(DesignerDto currentDesigner, DesignerDto newDesigner){
         currentDesigner.setName(newDesigner.getName());
         currentDesigner.setLastName(newDesigner.getLastName());
         currentDesigner.setCountry(newDesigner.getCountry());
     }
 
     @DeleteMapping(path="/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteById(@PathVariable Long id){
-        designerService.deleteById(id);
+    public ResponseEntity deleteById(@PathVariable Long id){
+        try{
+            designerService.deleteById(id);
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+        }
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }

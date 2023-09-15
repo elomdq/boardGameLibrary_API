@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-//@NoArgsConstructor
+
 //@AllArgsConstructor
 @ToString
 @Entity
@@ -73,6 +73,16 @@ public class BoardGame implements Serializable {
     }
     public void setImages(Set<Image> images) {
         getImages().addAll(images);
+    }
+
+    public void clearDesigners(){
+        designers.clear();
+    }
+    public void clearPublishers(){
+        publishers.clear();
+    }
+    public void clearArtists(){
+        artists.clear();
     }
 
     @Override

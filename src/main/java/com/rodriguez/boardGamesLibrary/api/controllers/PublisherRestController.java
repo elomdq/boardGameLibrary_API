@@ -3,9 +3,12 @@ package com.rodriguez.boardGamesLibrary.api.controllers;
 import com.rodriguez.boardGamesLibrary.api.dtos.PublisherDto;
 import com.rodriguez.boardGamesLibrary.api.mappers.PublisherMapper;
 import com.rodriguez.boardGamesLibrary.api.services.PublisherService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -52,7 +55,16 @@ public class PublisherRestController {
     }
 
     @PostMapping(consumes = "application/json", produces = "application/json")
-    public ResponseEntity<PublisherDto> create(@RequestBody PublisherDto publisher){
+    public ResponseEntity<PublisherDto> create(@Valid @RequestBody PublisherDto publisher, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            List<ObjectError> errors = bindingResult.getAllErrors();
+            StringBuilder errorMessage = new StringBuilder("Errors: \n");
+            for(ObjectError error:errors){
+                errorMessage.append("- ").append(error.getDefaultMessage()).append("\n");
+            }
+            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage.toString());
+        }
+
         PublisherDto publisherDto;
         try{
             publisherDto = publisherService.save(publisher);
@@ -63,7 +75,16 @@ public class PublisherRestController {
     }
 
     @PutMapping(path="/{id}", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<PublisherDto> update(@PathVariable Long id, @RequestBody PublisherDto publisher){
+    public ResponseEntity<PublisherDto> update(@PathVariable Long id,@Valid @RequestBody PublisherDto publisher, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            List<ObjectError> errors = bindingResult.getAllErrors();
+            StringBuilder errorMessage = new StringBuilder("Errors: \n");
+            for(ObjectError error:errors){
+                errorMessage.append("- ").append(error.getDefaultMessage()).append("\n");
+            }
+            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage.toString());
+        }
+
         PublisherDto currentPublisherDto;
         try{
             currentPublisherDto = publisherService.findById(id);

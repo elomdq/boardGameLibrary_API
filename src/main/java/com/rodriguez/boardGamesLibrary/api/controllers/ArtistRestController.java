@@ -2,9 +2,12 @@ package com.rodriguez.boardGamesLibrary.api.controllers;
 
 import com.rodriguez.boardGamesLibrary.api.dtos.ArtistDto;
 import com.rodriguez.boardGamesLibrary.api.services.ArtistService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -45,7 +48,16 @@ public class ArtistRestController {
     }
 
     @PostMapping(consumes = "application/json", produces = "application/json")
-    public ResponseEntity<ArtistDto> create(@RequestBody ArtistDto artist){
+    public ResponseEntity<ArtistDto> create(@Valid @RequestBody ArtistDto artist, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            List<ObjectError> errors = bindingResult.getAllErrors();
+            StringBuilder errorMessage = new StringBuilder("Errors: \n");
+            for(ObjectError error:errors){
+                errorMessage.append("- ").append(error.getDefaultMessage()).append("\n");
+            }
+            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage.toString());
+        }
+
         ArtistDto artistDto;
         try {
             artistDto = artistService.save(artist);
@@ -56,7 +68,16 @@ public class ArtistRestController {
     }
 
     @PutMapping(path= "/{id}", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<ArtistDto> update(@PathVariable Long id, @RequestBody ArtistDto artist){
+    public ResponseEntity<ArtistDto> update(@PathVariable Long id, @Valid @RequestBody ArtistDto artist, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            List<ObjectError> errors = bindingResult.getAllErrors();
+            StringBuilder errorMessage = new StringBuilder("Errors: \n");
+            for(ObjectError error:errors){
+                errorMessage.append("- ").append(error.getDefaultMessage()).append("\n");
+            }
+            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage.toString());
+        }
+
         ArtistDto currentArtist;
         try {
             currentArtist = artistService.findById(id);

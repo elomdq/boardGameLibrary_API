@@ -2,9 +2,12 @@ package com.rodriguez.boardGamesLibrary.api.controllers;
 
 import com.rodriguez.boardGamesLibrary.api.dtos.DesignerDto;
 import com.rodriguez.boardGamesLibrary.api.services.DesignerService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -48,7 +51,16 @@ public class DesignerRestController {
     }
 
     @PostMapping(consumes = "application/json", produces = "application/json")
-    public ResponseEntity<DesignerDto> create(@RequestBody DesignerDto designer){
+    public ResponseEntity<DesignerDto> create(@Valid @RequestBody DesignerDto designer, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            List<ObjectError> errors = bindingResult.getAllErrors();
+            StringBuilder errorMessage = new StringBuilder("Errors: \n");
+            for(ObjectError error:errors){
+                errorMessage.append("- ").append(error.getDefaultMessage()).append("\n");
+            }
+            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage.toString());
+        }
+
         DesignerDto designerDto;
         try{
             designerDto =designerService.save(designer);
@@ -59,7 +71,16 @@ public class DesignerRestController {
     }
 
     @PutMapping(path ="/{id}", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<DesignerDto> update(@PathVariable Long id, @RequestBody DesignerDto designer){
+    public ResponseEntity<DesignerDto> update(@PathVariable Long id, @Valid @RequestBody DesignerDto designer, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            List<ObjectError> errors = bindingResult.getAllErrors();
+            StringBuilder errorMessage = new StringBuilder("Errors: \n");
+            for(ObjectError error:errors){
+                errorMessage.append("- ").append(error.getDefaultMessage()).append("\n");
+            }
+            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage.toString());
+        }
+
         DesignerDto currentDesigner;
 
         try{

@@ -2,9 +2,13 @@ package com.rodriguez.boardGamesLibrary.api.controllers;
 
 import com.rodriguez.boardGamesLibrary.api.dtos.BoardGameDto;
 import com.rodriguez.boardGamesLibrary.api.services.BoardGameService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -67,7 +71,6 @@ public class BoardGameRestController {
                 return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
             }
         }catch(Exception e){
-            System.out.println(e.getMessage());
             e.printStackTrace();
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
         }
@@ -75,12 +78,24 @@ public class BoardGameRestController {
     }
 
     @PostMapping(consumes = "application/json", produces = "application/json")
-    public ResponseEntity<BoardGameDto> save(@RequestBody BoardGameDto game){
+    public ResponseEntity<BoardGameDto> save(@Valid @RequestBody BoardGameDto game, BindingResult bindingResult){
+
+        if(bindingResult.hasErrors()){
+            List<ObjectError> errors = bindingResult.getAllErrors();
+            StringBuilder errorMessage = new StringBuilder("Errors: \n");
+            for(ObjectError error:errors){
+                errorMessage.append("- ").append(error.getDefaultMessage()).append("\n");
+            }
+            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage.toString());
+        }
+
         BoardGameDto boardGameDto;
         try{
             boardGameDto = boardGameService.save(game);
-        }catch(Exception e){
-            System.out.println(e.getMessage());
+        } /*catch (MethodArgumentNotValidException e){
+            e.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error con la validación de los datos del Juego", e);
+        }*/ catch(Exception e){
             e.printStackTrace();
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
         }
@@ -88,7 +103,16 @@ public class BoardGameRestController {
     }
 
     @PutMapping(path="/{id}",consumes = "application/json", produces = "application/json")
-    public ResponseEntity<BoardGameDto> update(@PathVariable Long id, @RequestBody BoardGameDto game){
+    public ResponseEntity<BoardGameDto> update(@PathVariable Long id,@Valid @RequestBody BoardGameDto game, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            List<ObjectError> errors = bindingResult.getAllErrors();
+            StringBuilder errorMessage = new StringBuilder("Errors: \n");
+            for(ObjectError error:errors){
+                errorMessage.append("- ").append(error.getDefaultMessage()).append("\n");
+            }
+            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage.toString());
+        }
+
         BoardGameDto currentGame;
         try{
             currentGame = boardGameService.findById(id);

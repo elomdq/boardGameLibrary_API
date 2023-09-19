@@ -3,6 +3,9 @@ package com.rodriguez.boardGamesLibrary.api.models;
 import com.fasterxml.jackson.annotation.*;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.io.Serializable;
@@ -28,8 +31,11 @@ public class BoardGame implements Serializable {
     @Getter
     @Setter
     @Column(unique = true)
+    @NotBlank(message = "Es necesario ingresar el nombre del juego.")
+    @NotNull
     private String name;
 
+    @Min(value = 1,message = "El mínimo de jugadores de ser de al menos 1 jugador.")
     @Getter @Setter private int minPlayers;
     @Getter @Setter private int maxPlayers;
     @Getter @Setter private int minAge;

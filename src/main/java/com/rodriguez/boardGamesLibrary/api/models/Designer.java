@@ -3,6 +3,8 @@ package com.rodriguez.boardGamesLibrary.api.models;
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.io.Serializable;
@@ -23,8 +25,14 @@ public class Designer implements Serializable {
     @Getter @Setter
     private Long id;
 
+    @NotNull
+    @NotBlank(message = "Se debe de agregar un nombre.")
     @Getter @Setter private String name;
+
+    @NotNull
+    @NotBlank(message = "Se debe de agregar un apellido.")
     @Getter @Setter private String lastName;
+
     @Getter @Setter private String country;
 
     @JsonIncludeProperties({"name", "id"})

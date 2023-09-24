@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 
-@Mapper(uses = {DesignerMapper.class, PublisherMapper.class})
+@Mapper(uses = {DesignerMapper.class, PublisherMapper.class, ImageMapper.class, ArtistMapper.class})
 public interface BoardGameMapper {
     //public BoardGame boardGameDtoToBoardGame(BoardGameDto boardGameDto);
 

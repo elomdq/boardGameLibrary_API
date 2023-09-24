@@ -3,6 +3,8 @@ package com.rodriguez.boardGamesLibrary.api.models;
 import com.fasterxml.jackson.annotation.*;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,11 +27,14 @@ public class Image implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_img")
     @Setter @Getter private Long id;
+
     @Setter @Getter private String url;
 
     /*@Column(name = "img_base64")
     @Setter @Getter private String img;*/
 
+    @NotNull(message = "El archivo debe tener un nombre.")
+    @NotBlank(message = "El archivo debe tener un nombre.")
     @Column(unique = true)
     @Setter @Getter private String name;
 

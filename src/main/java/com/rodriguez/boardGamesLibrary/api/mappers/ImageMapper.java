@@ -15,14 +15,19 @@ import java.util.List;
 import java.util.Set;
 
 
-@Mapper(uses = BoardGameSlimMapper.class/*, injectionStrategy = InjectionStrategy.FIELD*/)
+@Mapper(uses = BoardGameSlimMapper.class)
 public interface ImageMapper {
-    //@Mapping(target= "game", qualifiedByName = "toDtoIgnoreChildLists")
+
+    //@Mapping(target= "game", ignore = true)
+    //@Mapping(target = "game", source = "game.id")
     public ImageDto toDto(Image image);
 
-    //@Mapping(target= "game", qualifiedByName = "toEntityIgnoreChildLists")
+    //@Mapping(target= "game", ignore = true)
     public Image toEntity(ImageDto imageDto);
 
     public Set<Image> toEntities (Set<ImageDto> imageDtos);
+
     public Set<ImageDto> toDtos(Set<Image> images);
+
+
 }
